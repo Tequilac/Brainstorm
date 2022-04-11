@@ -3,8 +3,8 @@ using UnityEngine;
 public class IsometricMovement : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rb;
-    [SerializeField] private float _speed = 10;
-    [SerializeField] private float _turnSpeed = 5000;
+    [SerializeField] private float _speed = 5;
+    [SerializeField] private float _turnSpeed = 360;
     private Vector3 _input;
     public Animator anim;
 
