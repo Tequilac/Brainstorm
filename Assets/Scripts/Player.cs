@@ -78,19 +78,19 @@ public class Player : MonoBehaviour
                 initialPosition = transform.position;
                 animation = 0f;
 
-                if (Input.GetKey(KeyCode.W))
+                if (Input.GetKey(KeyCode.W) || SwipeInput.swipedUp)
                 {
                     Move(Vector3Int.forward * 2);
                 }
-                else if (Input.GetKey(KeyCode.S))
+                else if (Input.GetKey(KeyCode.S) || SwipeInput.swipedDown)
                 {
                     Move(Vector3Int.back * 2);
                 }
-                else if (Input.GetKey(KeyCode.A))
+                else if (Input.GetKey(KeyCode.A) || SwipeInput.swipedLeft)
                 {
                     Move(Vector3Int.left * 2);
                 }
-                else if (Input.GetKey(KeyCode.D))
+                else if (Input.GetKey(KeyCode.D) || SwipeInput.swipedRight)
                 {
                     Move(Vector3Int.right * 2);
                 }
