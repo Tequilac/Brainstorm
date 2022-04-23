@@ -37,6 +37,8 @@ public class Player : MonoBehaviour
     // When fake animation should reverse
     private const float fakeAnimationCollisionPoint = 0.25f;
 
+    [SerializeField, Tooltip("Player index")]
+    private int playerIndex;
 
     private MovingState state = MovingState.None;
     private float animation;
@@ -46,14 +48,13 @@ public class Player : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 initialPosition;
 
+    private GameController gameController;
+
     [SerializeField]
     AudioSource jump;
 
     [SerializeField]
     AudioSource badJump;
-
-    [SerializeField]
-    AudioSource fail;
 
     void Awake()
     {
@@ -64,11 +65,9 @@ public class Player : MonoBehaviour
         );
         gameStartingPosition = targetPosition;
         transform.position = targetPosition;
-    }
 
-    // Start is called before the first frame update
-    void Start()
-    {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
+        gameController.RegisterPlayer(playerIndex, this);
     }
 
     // Update is called once per frame
@@ -130,16 +129,19 @@ public class Player : MonoBehaviour
 
                 if (animation > 2.0f)
                 {
-                    fail.Play();
                     state = MovingState.None;
                     animation = 0.0f;
-                    transform.position = gameStartingPosition;
-                    targetPosition = gameStartingPosition;
+                    gameController.OnDeath();
                 } else {
                     transform.position = MathParabola.Parabola(initialPosition, targetPosition, 1f, animation);
                 }
                 break;
         }
+    }
+
+    public void Reset() {
+        transform.position = gameStartingPosition;
+        targetPosition = gameStartingPosition;
     }
 
     private int RoundToNearestMultiple(float value, int multiple)
