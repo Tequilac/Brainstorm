@@ -13,23 +13,14 @@ public class TrapDoorDemo : MonoBehaviour {
     {
         //get the Animator component from the trap;
         TrapDoorAnim = GetComponent<Animator>();
-        //start opening and closing the trap for demo purposes;
-        StartCoroutine(OpenCloseTrap());
     }
 
 
-    IEnumerator OpenCloseTrap()
+    IEnumerator OpenTrap()
     {
-        //play open animation;
-        TrapDoorAnim.SetTrigger("open");
         //wait 2 seconds;
         yield return new WaitForSeconds(2);
         //play close animation;
         TrapDoorAnim.SetTrigger("close");
-        //wait 2 seconds;
-        yield return new WaitForSeconds(2);
-        //Do it again;
-        StartCoroutine(OpenCloseTrap());
-
     }
 }
