@@ -28,7 +28,8 @@ public class Player : MonoBehaviour
     {
         Air,
         Obstacle,
-        Death
+        Death,
+        Box
     }
 
     // [SerializeField, Tooltip("Player speed")]
@@ -143,7 +144,6 @@ public class Player : MonoBehaviour
         transform.position = gameStartingPosition;
         targetPosition = gameStartingPosition;
     }
-
     private int RoundToNearestMultiple(float value, int multiple)
     {
         return (int)Mathf.Round(value / multiple) * multiple;
@@ -155,11 +155,22 @@ public class Player : MonoBehaviour
             return BlockType.Obstacle;
         } else if (Physics.CheckSphere(position, 0.5f, 1 << LayerMask.NameToLayer("Death"))) {
             return BlockType.Death;
+        } else if (Physics.CheckSphere(position, 0.5f, 1 << LayerMask.NameToLayer("Box"))) {
+            return BlockType.Box;
         } else {
             return BlockType.Air;
         }
     }
 
+    private Box getBox(Vector3 position)
+    {
+        Collider[] colliders = Physics.OverlapSphere(position, 0.5f, 1 << LayerMask.NameToLayer("Box"));
+        if (colliders.Length > 0) {
+            return colliders[0].GetComponent<Box>();
+        } else {
+            return null;
+        }
+    }
     private void Move(Vector3Int vector)
     {
         Vector3 newTargetPosition = targetPosition + vector;
@@ -179,6 +190,23 @@ public class Player : MonoBehaviour
             case BlockType.Death:
                 state = MovingState.Falling;
                 targetPosition = newTargetPosition;
+                break;
+            case BlockType.Box:
+                var box = getBox(newTargetPosition);
+                if (box != null) {
+                    Vector3 newTargetBoxPosition = newTargetPosition + vector;
+                    if (box.canMove(newTargetBoxPosition)) {
+                        box.Move(newTargetBoxPosition);
+                        state = MovingState.Normal;
+                        targetPosition = newTargetPosition;
+                    } else {
+                        state = MovingState.Fake;
+                        targetPosition = newTargetPosition;
+                    }
+                } else {
+                    state = MovingState.Normal;
+                    targetPosition = newTargetPosition;
+                }
                 break;
         }
     }
