@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class GameController : MonoBehaviour
         return GameObject.FindObjectsOfType<Box>();
     }
 
+    private FinishPoint[] getFinishPoints()
+    {
+        return GameObject.FindObjectsOfType<FinishPoint>();
+    }
+
     public void OnDeath() {
         fail.Play();
         
@@ -55,6 +61,13 @@ public class GameController : MonoBehaviour
         foreach (var box in boxes)
         {
             box.Reset();
+        }
+    }
+
+    public void OnPlayerStand() {
+        FinishPoint[] finishPoints = getFinishPoints();
+        if (finishPoints[0].isPlayerStanding() && finishPoints[1].isPlayerStanding()) {
+            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % SceneManager.sceneCountInBuildSettings);
         }
     }
 
