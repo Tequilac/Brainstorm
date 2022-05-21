@@ -60,9 +60,9 @@ public class Player : MonoBehaviour
     void Awake()
     {
         targetPosition = new Vector3(
-            RoundToNearestMultiple(transform.position.x, 2), 
+            Utils.RoundToNearestMultiple(transform.position.x, 2), 
             Mathf.RoundToInt(transform.position.y),
-            RoundToNearestMultiple(transform.position.z, 2)
+            Utils.RoundToNearestMultiple(transform.position.z, 2)
         );
         gameStartingPosition = targetPosition;
         transform.position = targetPosition;
@@ -143,10 +143,6 @@ public class Player : MonoBehaviour
     public void Reset() {
         transform.position = gameStartingPosition;
         targetPosition = gameStartingPosition;
-    }
-    private int RoundToNearestMultiple(float value, int multiple)
-    {
-        return (int)Mathf.Round(value / multiple) * multiple;
     }
 
     private BlockType GetBlockType(Vector3 position)

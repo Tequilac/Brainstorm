@@ -10,6 +10,7 @@ public class Box : MonoBehaviour
     }
 
     private MovingState state = MovingState.None;
+    private Vector3 startPosition;
     private Vector3 initialPosition;
     private Vector3 targetPosition;
     private float animation;
@@ -26,10 +27,25 @@ public class Box : MonoBehaviour
         }
     }
 
+    void Awake() {
+        targetPosition = new Vector3(
+            Utils.RoundToNearestMultiple(transform.position.x, 2), 
+            Mathf.RoundToInt(transform.position.y),
+            Utils.RoundToNearestMultiple(transform.position.z, 2)
+        );
+        startPosition = targetPosition;
+    }
+
     public void Move(Vector3 newPosition) {
         targetPosition = newPosition;
         state = MovingState.Moving;
         moveSound.Play();
+    }
+
+    public void Reset() {
+        transform.position = startPosition;
+        targetPosition = startPosition;
+        state = MovingState.None;
     }
 
     void Update() {

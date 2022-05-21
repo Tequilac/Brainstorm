@@ -18,11 +18,33 @@ public class GameController : MonoBehaviour
     {
     }
 
+    private SC_TrapDoor[] getTrapdoors()
+    {
+        return GameObject.FindObjectsOfType<SC_TrapDoor>();
+    }
+
+    private Box[] getBoxes()
+    {
+        return GameObject.FindObjectsOfType<Box>();
+    }
+
     public void OnDeath() {
         fail.Play();
         
         players[0].Reset();
         players[1].Reset();
+
+        SC_TrapDoor[] trapdoors = getTrapdoors();
+        foreach (var trapdoor in trapdoors)
+        {
+            trapdoor.Reset();
+        }
+
+        Box[] boxes = getBoxes();
+        foreach (var box in boxes)
+        {
+            box.Reset();
+        }
     }
 
     public void RegisterPlayer(int index, Player player) {
