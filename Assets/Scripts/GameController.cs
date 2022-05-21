@@ -23,6 +23,11 @@ public class GameController : MonoBehaviour
         return GameObject.FindObjectsOfType<SC_TrapDoor>();
     }
 
+    private SC_SpikeTrap[] getSpikeTraps()
+    {
+        return GameObject.FindObjectsOfType<SC_SpikeTrap>();
+    }
+
     private Box[] getBoxes()
     {
         return GameObject.FindObjectsOfType<Box>();
@@ -38,6 +43,12 @@ public class GameController : MonoBehaviour
         foreach (var trapdoor in trapdoors)
         {
             trapdoor.Reset();
+        }
+
+        SC_SpikeTrap[] spikeTraps = getSpikeTraps();
+        foreach (var spikeTrap in spikeTraps)
+        {
+            spikeTrap.Reset();
         }
 
         Box[] boxes = getBoxes();
